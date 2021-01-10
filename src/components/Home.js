@@ -4,20 +4,38 @@ import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
 import {useHistory} from 'react-router-dom'
 
+import {connect, useDispatch} from 'react-redux'
+import {setTemperature, increment} from '../redux/actions'
+
 const Home = () => {
    const countries = ["Kuala Lumpur", "Singapore"]
    const defaultKey = "ff9f895b2e884d6680530135202710"
-
    const [submitted, setSubmitted] = useState(false)
-   const [celsius, setCelsius] = useState(0)
-   const [fahrenheit, setFahrenheit] = useState(0)
+
+   const dispatch = useDispatch()
 
    useEffect(() => {
       if(submitted) {
          // fetch data from API
+         /* setTemperature({
+            celsius: 111,
+            fahrenheit: 222
+         }) */
          getData()
       }
    }, [submitted])
+
+   /* useEffect(() => {
+      getData()
+      /* if (submitted) {
+         // fetch data from API
+         /* setTemperature({
+            celsius: 111,
+            fahrenheit: 222
+         }) 
+         getData()
+      } 
+   }, []) */
 
    let history = useHistory()
 
@@ -38,8 +56,7 @@ const Home = () => {
 
       if (formData.country === "" || formData.key === "") {
          //todo add a snackbar here 
-         //alert('error')
-         return 
+         alert('error')
       }
       else {
          // send request to API here
@@ -48,15 +65,21 @@ const Home = () => {
          setSubmitted(true)
       }
       console.log(formData)  
+
+      /* increment()
+      setTemperature({
+         celsius: 111,
+         fahrenheit: 222
+      }) */
    }
 
-   const goToTemperaturePage = () => {
+   /* const goToTemperaturePage = () => {
       history.push("/temperature", {
          celsius: celsius, 
          fahrenheit: fahrenheit
       })
       console.log(history)
-   }
+   } */
 
    const handleChange = (event) => {
       setFormData({
@@ -75,12 +98,18 @@ const Home = () => {
       else {
          const data = await response.json()
 
-         //console.log(data.current)
-         //console.log(data.current.temp_c)
-         //console.log(data.current.temp_f)
-         setCelsius(data.current.temp_c)
-         setFahrenheit(data.current.temp_f)
+         console.log(data.current)
+         console.log(data.current.temp_c)
+         console.log(data.current.temp_f)
+         //setCelsius(data.current.temp_c)
+         //setFahrenheit(data.current.temp_f)
 
+         dispatch(setTemperature({
+            celsius: data.current.temp_c,
+            fahrenheit: data.current.temp_f
+         }))
+
+         history.push("/temperature")
          /* console.log(celsius)
          console.log(fahrenheit) */
       }  
@@ -102,6 +131,7 @@ const Home = () => {
             </div>
 
             <div className="form-elements">
+               {/* <Button onClick={() => dispatch(increment())} id="buttons" variant="contained" color="secondary" fullWidth > Submit </Button> */}
                <Button type="submit" id="buttons" variant="contained" color="secondary" fullWidth > Submit </Button>
             </div>
          </form> 
@@ -109,4 +139,10 @@ const Home = () => {
    )
 }
 
+/* const mapDispatchToProps = dispatch => ({
+   setTemperature: temperature => dispatch(setTemperature(temperature)),
+   increment: () => dispatch(increment())
+}) */
+
 export default Home
+//export default connect(null, mapDispatchToProps)(Home)
