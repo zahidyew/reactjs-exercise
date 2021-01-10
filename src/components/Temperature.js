@@ -1,30 +1,21 @@
 import React from 'react'
+import {useSelector} from 'react-redux'
 import TextField from '@material-ui/core/TextField'
 
-import {useSelector} from 'react-redux'
-/* import {useEffect} from 'react'
-import {useLocation} from 'react-router-dom' */
-
 const Temperature = () => {
+   // Redux: useSelector is used to extract the state from redux store (application's states)
    const celsius = useSelector(state => state.celsius)
    const fahrenheit = useSelector(state => state.fahrenheit)
-   /* const location = useLocation()
-
-   useEffect(() => {
-      console.log(location.state)
-      console.log(location.state.celsius)
-
-   }, [location]) */
 
    return (
       <div className="Temperature">
          <form className="form">
             <div className="form-elements">
-               <TextField id="text-1" label="Celsius" color="secondary" value={celsius} fullWidth />
+               <TextField label="Celsius" color="secondary" value={celsius} fullWidth />
             </div>
 
             <div className="form-elements">
-               <TextField id="text-1" label="Fahrenheit" color="secondary" value={fahrenheit} fullWidth />
+               <TextField label="Fahrenheit" color="secondary" value={fahrenheit} fullWidth />
             </div>
          </form>
       </div>

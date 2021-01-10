@@ -1,43 +1,50 @@
 import { useReducer, useState, useEffect } from 'react'
+import {useHistory} from 'react-router-dom'
+import {useDispatch} from 'react-redux'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
-import {useHistory} from 'react-router-dom'
 
-import {connect, useDispatch} from 'react-redux'
-import {setTemperature, increment} from '../redux/actions'
+import {setTemperature} from '../redux/actions'
 
 const Home = () => {
    const countries = ["Kuala Lumpur", "Singapore"]
    const defaultKey = "ff9f895b2e884d6680530135202710"
    const [submitted, setSubmitted] = useState(false)
-
    const dispatch = useDispatch()
+   const history = useHistory()
 
    useEffect(() => {
       if(submitted) {
          // fetch data from API
-         /* setTemperature({
-            celsius: 111,
-            fahrenheit: 222
-         }) */
          getData()
       }
-   }, [submitted])
+   })
 
-   /* useEffect(() => {
-      getData()
-      /* if (submitted) {
-         // fetch data from API
-         /* setTemperature({
-            celsius: 111,
-            fahrenheit: 222
-         }) 
-         getData()
-      } 
-   }, []) */
+   // func to fetch data from API
+   const getData = async () => {
+      const url = `http://api.weatherapi.com/v1/current.json?key=${formData.key}&q=${formData.country}`
+      const response = await fetch(url)
 
-   let history = useHistory()
+      if (!response.ok) {
+         // some errors occurred. Eg: invalid API key
+         console.log(response.statusText)
+      }
+      else {
+         const data = await response.json()
+         //console.log(data.current)
+
+         // Redux: call the setTemperature action using dispatch 
+         // & send an obj containing celsius & fahrenheit values
+         dispatch(setTemperature({
+            celsius: data.current.temp_c,
+            fahrenheit: data.current.temp_f
+         }))
+
+         // go to Temperature page
+         history.push("/temperature")
+      }
+   }
 
    const formReducer = (state, event) => {
       return {
@@ -51,36 +58,23 @@ const Home = () => {
       country: '',
    })
 
+   // handle form submission after user clicked Submit
    const handleSubmit = (event) => {
       event.preventDefault()
 
       if (formData.country === "" || formData.key === "") {
          //todo add a snackbar here 
-         alert('error')
+         alert('Please fill all the required fields.')
       }
       else {
-         // send request to API here
-         //getData()
-         //goToTemperaturePage()
+         // set submitted value to true, then send request to API
          setSubmitted(true)
       }
-      console.log(formData)  
-
-      /* increment()
-      setTemperature({
-         celsius: 111,
-         fahrenheit: 222
-      }) */
+      //console.log(formData)  
+      //increment()
    }
 
-   /* const goToTemperaturePage = () => {
-      history.push("/temperature", {
-         celsius: celsius, 
-         fahrenheit: fahrenheit
-      })
-      console.log(history)
-   } */
-
+   // handle user's input for the Textfields
    const handleChange = (event) => {
       setFormData({
          name: event.target.name,
@@ -88,36 +82,9 @@ const Home = () => {
       })
    }
 
-   const getData = async () => {
-      const url = `http://api.weatherapi.com/v1/current.json?key=${formData.key}&q=${formData.country}`
-      const response = await fetch(url)
-
-      if (!response.ok) {
-         console.log(response.statusText)
-      }
-      else {
-         const data = await response.json()
-
-         console.log(data.current)
-         console.log(data.current.temp_c)
-         console.log(data.current.temp_f)
-         //setCelsius(data.current.temp_c)
-         //setFahrenheit(data.current.temp_f)
-
-         dispatch(setTemperature({
-            celsius: data.current.temp_c,
-            fahrenheit: data.current.temp_f
-         }))
-
-         history.push("/temperature")
-         /* console.log(celsius)
-         console.log(fahrenheit) */
-      }  
-   }
-
    return (
       <div className="Home">
-         <form className="form" noValidate autoComplete="off" onSubmit={handleSubmit}>
+         <form className="form" autoComplete="off" onSubmit={handleSubmit}>
             <div className="form-elements">
                <TextField id="text-1" label="Your API Key" color="secondary" name="key" value={formData.key} onChange={handleChange} fullWidth />
             </div>
@@ -139,10 +106,12 @@ const Home = () => {
    )
 }
 
+export default Home
+
+
 /* const mapDispatchToProps = dispatch => ({
    setTemperature: temperature => dispatch(setTemperature(temperature)),
    increment: () => dispatch(increment())
 }) */
 
-export default Home
 //export default connect(null, mapDispatchToProps)(Home)
