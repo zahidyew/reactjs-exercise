@@ -28,7 +28,9 @@ const Home = () => {
 
       if (!response.ok) {
          // some errors occurred. Eg: invalid API key
-         console.log(response.statusText)
+         //console.log(response.statusText)
+         alert(response.statusText)
+         setSubmitted(false)
       }
       else {
          const data = await response.json()

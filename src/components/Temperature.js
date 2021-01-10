@@ -11,11 +11,11 @@ const Temperature = () => {
       <div className="Temperature">
          <form className="form">
             <div className="form-elements">
-               <TextField label="Celsius" color="secondary" value={celsius} fullWidth />
+               <TextField type="number" label="Celsius" color="secondary" value={celsius} fullWidth />
             </div>
 
             <div className="form-elements">
-               <TextField label="Fahrenheit" color="secondary" value={fahrenheit} fullWidth />
+               <TextField type="number" label="Fahrenheit" color="secondary" value={fahrenheit} fullWidth />
             </div>
          </form>
       </div>
