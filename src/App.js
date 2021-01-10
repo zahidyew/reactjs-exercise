@@ -1,25 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import {Route, BrowserRouter, Switch} from 'react-router-dom'
+import Home from './components/Home'
+import Temperature from './components/Temperature'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" exact component={Home}></Route>
+          <Route path="/temperature" component={Temperature}></Route>
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }
 
 export default App;
+
+/* <form noValidate autoComplete="off">
+        <Box display="flex" justifyContent="center" >
+          <Box width="70%">
+            <TextField id="standard-basic" label="Standard" fullWidth />
+          </Box>
+        </Box>
+      </form>  */
