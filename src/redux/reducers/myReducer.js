@@ -16,6 +16,18 @@ const reducer = (state = initialState, action) => {
             celsius: action.payload.celsius,
             fahrenheit: action.payload.fahrenheit
          }
+      case "FETCH_TEMPERATURE":
+         return {
+            ...state,
+            celsius: action.payload.celsius,
+            fahrenheit: action.payload.fahrenheit
+         }
+      case "ERROR":
+         //alert(action.payload)
+         return {
+            ...state,
+            error: action.payload
+         }
       default:
          return state
    }

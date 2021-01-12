@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
 
-import {setTemperature} from '../redux/actions'
+import {setTemperature, fetchTemperature} from '../redux/actions'
 
 const Home = () => {
    const countries = ["Kuala Lumpur", "Singapore"]
@@ -17,7 +17,10 @@ const Home = () => {
    useEffect(() => {
       if(submitted) {
          // fetch data from API
-         getData()
+         //getData()
+         dispatch(fetchTemperature(formData))
+         // go to Temperature page
+         history.push("/temperature")
       }
    })
 
